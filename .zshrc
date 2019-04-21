@@ -26,8 +26,8 @@ export GOPATH=$HOME/dev
 export PATH=$PATH:$GOPATH/bin
 export EDITOR=vim
 
-alias ll='ls -la'
-alias l='ls'
+alias ll='ls -laG'
+alias l='ls -G'
 alias c='cd'
 alias p='pwd'
 alias v='vim'
