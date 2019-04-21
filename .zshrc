@@ -1,14 +1,30 @@
-export ZSH=/Users/k__bayashi/.oh-my-zsh
-ZSH_THEME="agnoster"
+export ZPLUG_HOME=/usr/local/opt/zplug
+source $ZPLUG_HOME/init.zsh
 
-plugins=(
-  git
-)
-
-source $ZSH/oh-my-zsh.sh
+zplug "mafredri/zsh-async"
+zplug "sindresorhus/pure"
+zplug "zsh-users/zsh-syntax-highlighting"
+zplug "zsh-users/zsh-history-substring-search"
+zplug "zsh-users/zsh-autosuggestions"
+zplug "zsh-users/zsh-completions"
+zplug "chrissicool/zsh-256color"
+zplug "b4b4r07/emoji-cli"
+zplug "zsh-users/zsh-completions"
+zplug "mrowa44/emojify", as:command
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+  printf "Install? [y/N]: "
+  if read -q; then
+    echo; zplug install
+  fi
+fi
+# Then, source plugins and add commands to $PATH
+zplug load
 
 export SSH_KEY_PATH="~/.ssh/rsa_id"
-
+export GOPATH=$HOME/dev
+export PATH=$PATH:$GOPATH/bin
+export EDITOR=vim
 
 alias ll='ls -la'
 alias l='ls'
@@ -24,19 +40,20 @@ alias gl='git log --oneline'
 alias gp='git push origin'
 alias gc='git commit -m'
 alias gst='git stash'
-alias gp='git stash pop'
+alias gstp='git stash pop'
 alias gr='git rebase -i'
-alias b='branch'
+alias gb='git branch'
+alias gd='git diff'
+alias gfc='git commit --allow-empty -m'
 
-export PATH=/usr/local/bin:$PATH
-eval "$(rbenv init -)"
-export PKG_CONFIG_PATH=/opt/ImageMagick/lib/pkgconfig
-export PATH="/usr/local/opt/imagemagick@6/bin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
-export PGDATA=/usr/local/var/postgres
-alias updatedb='sudo /usr/libexec/locate.updatedb'
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
-eval "$(direnv hook zsh)"
-export EDITOR=vim
-export PATH=$PATH:/Users/k__bayashi/Library/Android/sdk/platform-tools
+function history-fzf() {
+    local tac=${commands[tac]:-"tail -r"}
+    BUFFER=$( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | sed 's/ *[0-9]* *//' | eval $tac | awk '!a[$0]++' | fzf +s)
+    CURSOR=$#BUFFER
+    zle clear-screen
+}
+
+zle -N history-fzf
+bindkey '^r' history-fzf
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
