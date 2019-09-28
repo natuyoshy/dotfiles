@@ -58,3 +58,16 @@ zle -N history-fzf
 bindkey '^r' history-fzf
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+#translate-shell
+alias te_="trans {en=ja}" #英→日
+alias tj_="trans {ja=en}" #日→英
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+export PATH=$HOME/.nodebrew/current/bin:$PATH
+export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
+export PATH="/usr/local/opt/mysql@5.6/bin:$PATH"
